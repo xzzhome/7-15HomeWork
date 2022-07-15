@@ -20,7 +20,7 @@
         current-page 分页参数：当前页
         page-size 分页参数：每页个数-->
     <el-pagination background align="right" layout="prev, pager, next"
-                   @current-change="pageChange"
+                   @current-change="findAllStudent()"
                    :total="totals"
                    :current-page="currentPage"
                    :page-size="pageSize">
@@ -40,19 +40,22 @@ export default {
   },
   methods:{
 
-    findAllStudent(){
+    findAllStudent(currentPage){
+      if(currentPage!=null){
+        this.currentPage=currentPage
+      }
       this.$http.post("/student/list",{currentPage:this.currentPage,pageSize:this.pageSize})
-        .then((result)=>{
+        .then(result=>{
           this.tableData=result.data.data
           this.totals=result.data.totals
         }).catch((result)=>{
       })
     },
 
-    pageChange(currentPage){
+    /*pageChange(currentPage){
       this.currentPage=currentPage
       this.findAllStudent()
-    }
+    }*/
   },
   mounted() {
     this.findAllStudent()
